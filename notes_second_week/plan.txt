@@ -1,0 +1,76 @@
+Target: API for notes app (creating, reading and deleting notes)
+
+JSON input for read and delete action: with endpoints GET|DELETE /api/v1/{user_id}/{note_id} 
+{
+ user_id: int - here's identificator for user;
+ note_id: int - id of note, where we perform some action;
+}
+
+JSON input for create action: endpoint POST /api/v1/{user_id}/create 
+{
+ user_id: int - here's identificator for user;
+ note_text: str - the text of the note, if action is create;
+ note_date: date in iso format, when note was created, if action is create
+}
+
+
+JSON response for create if succeed:
+{
+user_id: int - user id
+note_id: int - the id of newly created note
+} 
+
+
+JSON response for read if succeed:
+{
+user_id: int - user id
+note_id: id of the note
+note_date: date ISO
+note_text: text of the note 
+}
+
+JSON for delete: No json 
+
+if do not succeed any of them:
+{
+error_message: str - here's error message why do not succeed
+}
+
+---
+sql table design:
+notes (
+    note_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    note_text TEXT,
+    note_date TIMESTAMP
+)
+
+---
+Порядок действий когда запрос create:
+1) we pass user_id, note_text and note_date to database new_note() function:
+--1) check if user exists, if not - return error
+--2) get last note_id for that user's id and increase by 1 - that's note-id in next step
+--3) store values (user_id, note_id, note_date, note_text) 
+--4) return newly created note-id
+--5) I don't know if if could be performed effectively and in 1 SQL query
+2) if there's an error on new_note() function, return error json
+3) Else, return JSON response for create with user_id and note_id
+
+---
+Порядок действий когда запрос read:
+1) we pass user_id and note_id to database function get_note():
+--1) check if user exists, if not - return error
+--2) check if note_id exists, if not - return error
+--3) get note_date and note_text from database
+--4) return note_date and note_text
+2) if there's an error on get_note() function, return error json
+3) Else, return JSON response for read
+
+---
+Actions on delete:
+1) we pass user_id to delete_note() database function
+--1) check if user exists, if not - return error
+--2) check if note_id exists, if not - return error
+--3) delete entry
+2) if there's an error on delete_note() function, return error json
+3) Else return succeess status
