@@ -19,7 +19,7 @@ Here I study FastAPI and backend programming for 12 weeks by ChatGPT roadmap jus
 
 ➡️ Мини-задача: сделать API с двумя эндпоинтами: `/hello` и `/time`.
 
-### Неделя 2
+### Неделя 2 - DONE
 
 * FastAPI: работа с query params, POST-запросы.
 * JSON и валидация данных (pydantic).
