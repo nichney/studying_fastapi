@@ -27,7 +27,7 @@ Here I study FastAPI and backend programming for 12 weeks by ChatGPT roadmap jus
 
 ➡️ Мини-задача: API для заметок (создать, прочитать, удалить заметку).
 
-### Неделя 3
+### Неделя 3 - DONE
 
 * PostgreSQL (docker контейнер).
 * SQLAlchemy (ORM).
