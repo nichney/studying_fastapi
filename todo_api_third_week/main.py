@@ -39,3 +39,15 @@ async def api_create(user_id: int, note_text: str, note_date: str):
                 }
     except Exception as e:
         return {'error_message': e}
+
+@app.update('/api/v1/{user_id}/{note_id}/update')
+async def api_update(user_id: int, note_id: int, note_text: str):
+    try:
+        await db.update_note(user_id, note_id, note_text)
+        return {
+                'user_id': user_id,
+                'note_id': note_id,
+                'status': 'success',
+        }
+    except Exception as e:
+        return {'error_message': e}

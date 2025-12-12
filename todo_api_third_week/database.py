@@ -115,4 +115,14 @@ class Query:
         conn.commit()
         conn.close()
 
+    async def update_note(self, user_id: int, note_id: int, note_text: str):
+        async with self._lock:
+            return await asyncio.to_thread(self._update_note, user_id, note_id, note_text)
+
+    def _update_note(self, user_id: int, note_id: int, note_text: str):
+        conn = sqlite3.connect(self.db_path)
+        cur = conn.cursor()
+        cur.execute("UPDATE notes SET note_text = ? WHERE user_id = ? AND note_id = ?", (note_text, user_id, note_id))
+
+
 
